@@ -1,0 +1,14 @@
+foo(); // TypeError
+bar(); // ReferenceError
+
+var foo = function bar() {
+	// ...
+};
+
+foo is in global scope so it's not a reference error but it has undefined value that gives typeError
+
+
+
+a = 2;
+var a;
+console.log(a);
