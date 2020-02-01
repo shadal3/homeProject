@@ -1,5 +1,13 @@
-$bg: white;
-
-body {
-  background: $bg;
+h1 {
+  color: red;
+}
+h2 {
+  color: red;
+}
+h3 {
+  color: red;
+}
+.wrapper {
+  display:flex;
+  align-items: center;
 }

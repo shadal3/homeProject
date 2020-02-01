@@ -1,23 +1,18 @@
-import * as PIXI from 'pixi.js';
+//import * as PIXI from 'pixi.js';
+import { RXstack } from './js/RXstack';
 
-//module rx from "RXstack";
-//module PIXI from pixi.js;
-//module { pixing } from pixi
-//module {rxModule} from RXstack;
-
-import { $observable } from './RXstack'
-//import { rx } from "./RXstack";
 import './scss/main.scss';
 import './css/main.css';
 
-console.log($observable);
+
+console.log("meow");
+let helloWord = new RXstack();
+console.log(helloWord.HelloWord());
 
 for (var i = 0; i <= 5; i++) {
-    ((i) => {
         setTimeout( () => {
             console.log( i );
         }, 0 );
-    })(i);
 }
 
 a = 2;
@@ -31,7 +26,7 @@ function random (param) {
     console.log(param);
 }
 
-/*var foo = true;
+var foo = true;
 
 if (foo) {
     var bar = foo * 2;
