@@ -4,6 +4,7 @@ const baseWebpackConfig = require('./webpack.base.conf');
 
 const devWebpackConfig = merge(baseWebpackConfig, {
     mode: 'development',
+    contentBase: baseWebpackConfig.externals.paths.dist, //where webpack will be opened
     devtool: 'cheap-module-eval-source-map',
     devServer: {
         port: 8080,

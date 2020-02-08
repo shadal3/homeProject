@@ -1,16 +1,30 @@
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-//appeal to package.json to take them and register them plugins part below
+const CopyWebpackPlugin = require("copy-webpack-plugin");
+//we appeal to package.json to take plugins and register them in plugins part below
 const path = require('path');
 
+
+const PATHS = {
+    src: path.join(__dirname, './src'),
+    dist: path.join(__dirname, './dist'),
+    assets: 'assets/'
+};
+
 module.exports = {
+
+    externals: {
+        paths: PATHS
+    },
     entry: {
-        app: './src/index.js'
+        app: PATHS.src
     },
     output: {
-        filename: '[name].js',
+        filename: `${PATHS.assets}js/[name].js`,
+        path: PATHS.dist,
+        publicPath: '/'
         //create .dist folder in root of a project
-        path: path.resolve(__dirname, './dist'),
+        //path: path.resolve(__dirname, './dist'),
         //publicPath: './dist'
     },
     module: {
@@ -75,7 +89,11 @@ module.exports = {
             filename: "./index.html"
         }),
         new MiniCssExtractPlugin({
-            filename: "[name].css"
-        })
+            filename: `${PATHS.assets}css/[name].css`,
+        }),
+        new CopyWebpackPlugin([
+            {from: `${PATHS.src}/img`, to: `${PATHS.assets}img`},
+
+        ])
     ]
 };
