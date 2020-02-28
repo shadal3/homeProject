@@ -33,9 +33,9 @@
     "rxjs": "^6.5.2",
     "sass-loader": "^7.3.1",
     "style-loader": "^0.23.1",
-    "webpack": "^4.35.0",
+    "webpack": "^4.41.6",
     "webpack-cli": "^3.3.5",
-    "webpack-dev-server": "^3.7.2",
+    "webpack-dev-server": "^3.10.3",
     "webpack-merge": "^4.2.2"
   },
   "dependencies": {
