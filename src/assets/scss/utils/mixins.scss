@@ -1,4 +1,4 @@
-@import "./vars";
+@import "vars";
 
 // px to rem
 @function rem($pixels, $context: $mainFontSize) {
