@@ -1,8 +1,20 @@
+@import "~mdbootstrap/css/mdb.min.css"; /*~ -> redirect to node_modules folder*/
+@import "~bootstrap/dist/css/bootstrap.min.css";
+@import "~@fortawesome/fontawesome-free/css/all.css";
 @import "modules/wrapper";
 @import "utils/libs";
 @import "utils/vars";
 @import "utils/mixins";
 @import "utils/fonts";
+
+header, html, body, #intro {
+  height: 100%;
+}
+
+#intro {
+  background: url(../img/nightTown.jpeg);
+  background-size: cover;
+}
 
 html {
   line-height: $mainLineHeight;
@@ -93,17 +105,17 @@ section, .section {
 
 @media screen and (max-width: $smDesktopWidth) {
   .container {
-    max-width: tableWidth;
+    max-width: $tableWidth;
   }
 }
 @media screen and (max-width: $tableWidth) {
   .container {
-    max-width: phoneWidth;
+    max-width: $phoneWidth;
   }
 }
 @media screen and (max-width: $phoneWidth) {
   .container {
-    max-width: smPhoneWidth;
+    max-width: $smPhoneWidth;
   }
 }
 

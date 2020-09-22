@@ -1,7 +1,7 @@
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
-//we appeal to package.json to take plugins and register them in plugins part below
+//we address to package.json to take plugins and register them in the plugins part below
 const path = require('path');
 
 
@@ -22,7 +22,7 @@ module.exports = {
     output: {
         filename: `${PATHS.assets}js/[name].[chunkhash].js`,
         path: PATHS.dist,
-        publicPath: '/'
+        publicPath: '/' //needs for lazy loading of not necessary javascript files
         //create .dist folder in root of a project
         //path: path.resolve(__dirname, './dist'),
         //publicPath: './dist'
@@ -63,7 +63,7 @@ module.exports = {
                 }
             },
             {
-                test: /\.(png|svg|jpg|gif)$/,
+                test: /\.(png|svg|jpg|gif|jpeg)$/,
                 loader: "file-loader",
                 options: {
                     name: '[name].[ext]' //ext we take from test, name is app (refers to entry - app)
@@ -72,12 +72,15 @@ module.exports = {
             {
                 test: /\.css$/,
                 use: [
+                    // Adds CSS to the DOM by injecting a `<style>` tag
                     'style-loader',
                     MiniCssExtractPlugin.loader,
                     {
+                        // Interprets `@import` and `url()` like `import/require()` and will resolve them
                         loader: 'css-loader',
                         options: { sourceMap: true}
                     }, {
+                        //// Loader for webpack to process CSS with PostCSS
                         loader: 'postcss-loader',
                         options: {sourceMap : true, config: {path: './postcss.config.js'}}
                     }
@@ -116,7 +119,6 @@ module.exports = {
             {from: `${PATHS.src}/${PATHS.assets}/img`, to: `${PATHS.assets}img`},
             {from: `${PATHS.src}/${PATHS.assets}/fonts`, to: `${PATHS.assets}fonts`},
             {from: `${PATHS.src}/static`, to: 'static'},
-
         ])
     ]
 };
