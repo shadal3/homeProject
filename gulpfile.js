@@ -17,7 +17,7 @@ fs.readdirSync(path.resolve(__dirname, 'node_modules'))
 var config = {
     mode: 'development',
     name: 'server',
-    entry: ['babel-polyfill', './src/main.js'],
+    entry: ['./src/main.js'],
     target: 'node',
     output: {
         path: path.join(__dirname, '/bin'),

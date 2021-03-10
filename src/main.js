@@ -40,8 +40,6 @@ async function f1() {
 
 f1();
 
-client.time().then(time => console.log(time))
-
 app.get("/", (req, res) => {
     res.status(200).send("WHATABYTE: Food For Devs");
 });

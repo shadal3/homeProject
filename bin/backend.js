@@ -190,9 +190,6 @@ function _f() {
 }
 
 f1();
-client.time().then(function (time) {
-  return console.log(time);
-});
 app.get("/", function (req, res) {
   res.status(200).send("WHATABYTE: Food For Devs");
 }); //Server Activation
