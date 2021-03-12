@@ -24,7 +24,9 @@ var config = {
         publicPath: 'bin/',
         filename: 'backend.js'
     },
-    externals: nodeModules,
+    externals: [
+        nodeModules
+    ],
     module: {
         rules: [
             { test: /\.jsx?$/, loader: 'babel-loader', },

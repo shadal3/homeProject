@@ -12,7 +12,6 @@ const PATHS = {
 };
 
 module.exports = {
-
     externals: {
         paths: PATHS
     },
