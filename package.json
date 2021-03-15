@@ -47,6 +47,7 @@
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.14.0",
     "async": "^3.2.0",
+    "binance-api-node": "^0.10.33",
     "bootstrap": "^4.5.2",
     "ccxt": "^1.42.66",
     "child_process": "^1.0.2",
