@@ -11,7 +11,9 @@ const ccxt = require('ccxt');
 //App Variables
 const app = Express();
 const port = "8080";
-const pairToTrade = "USDT";
+const pairToTrade = "BTC";
+const baseCryptoPrecision = 0; //ADA -1, SKY - 0
+const quoteCryptoPrecision = 8 //USDT - 3, BTC - 8
 
 const commonDataHandler = new Promise((resolve, err) => {
   resolve(new Binance())
@@ -161,23 +163,25 @@ async function askMilestones() {
 }
 
 async function sellCryptoCurrency(binance, combinedPair, boughtBaseCurrencyAmount, boughtPrice, milestone1, milestone2, milestone3) {
-  const amount1 = parseFloat((boughtBaseCurrencyAmount * 0.33).toFixed(1));
-  const amount2 = parseFloat(((boughtBaseCurrencyAmount - amount1) * 0.5).toFixed(1));
-  const amount3 = parseFloat((boughtBaseCurrencyAmount - amount1 - amount2).toFixed(1));
+  const amount1 = round(boughtBaseCurrencyAmount * 0.333, baseCryptoPrecision);
+  const amount2 = round((boughtBaseCurrencyAmount * 0.333), baseCryptoPrecision);
+  const amount3 = (round((boughtBaseCurrencyAmount - amount1 - amount2) * 0.99, baseCryptoPrecision));
   
-  const milestonePrice1 = (boughtPrice + (boughtPrice * milestone1 / 100)).toFixed(3)
-  const milestonePrice2 = (boughtPrice + (boughtPrice * milestone2 / 100)).toFixed(3)
-  const milestonePrice3 = (boughtPrice + (boughtPrice * milestone3 / 100)).toFixed(3)
+  const milestonePrice1 = (boughtPrice + (boughtPrice * milestone1 / 100)).toFixed(quoteCryptoPrecision)
+  const milestonePrice2 = (boughtPrice + (boughtPrice * milestone2 / 100)).toFixed(quoteCryptoPrecision)
+  const milestonePrice3 = (boughtPrice + (boughtPrice * milestone3 / 100)).toFixed(quoteCryptoPrecision)
   
   console.log(`milestone1: ${milestone1},  milestone2: ${milestone2},  milestone3: ${milestone3}`)
   console.log(`amount1: ${amount1},  amount2: ${amount2},  amount3: ${amount3}`)
   console.log(`milestonePrice1: ${milestonePrice1},  milestonePrice2: ${milestonePrice2},  milestonePrice3: ${milestonePrice3}`)
   
   binance.createLimitOrder(combinedPair, "sell", amount1, milestonePrice1);
-  binance.createLimitOrder(combinedPair, "sell", amount2, milestonePrice2);
-  binance.createLimitOrder(combinedPair, "sell", amount3, milestonePrice3);
+  binance.createLimitOrder(combinedPair, "sell", amount3, milestonePrice2);
+  binance.createLimitOrder(combinedPair, "sell", amount2, milestonePrice3);
   
-  
+  function round(value, decimals) {
+    return Number(Math.floor(value+'e'+decimals)+'e-'+decimals);
+  }
 }
 
 Promise.all([commonDataHandler, client]).then(
