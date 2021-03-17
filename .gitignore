@@ -1,3 +1,5 @@
 node_modules
 dist
 bin
+bin/backend.js
+bin/backend.js.map
