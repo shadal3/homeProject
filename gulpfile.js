@@ -61,8 +61,6 @@ gulp.task('backend-build', function(cb) {
 
 gulp.task('server', function (cb) {
     exec('node bin/backend.js', function (err, stdout, stderr) {
-        console.log(stdout);
-        console.log(stderr);
         cb(err);
     });
 })

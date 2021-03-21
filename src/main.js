@@ -6,6 +6,7 @@ require("regenerator-runtime"); // to fix await in case babel polyfills the code
 const Express = require('express');
 const Readline = require('readline');
 const Binance = require('node-binance-api');
+const { performance } = require('perf_hooks');
 const ccxt = require('ccxt');
 
 //App Variables
@@ -132,6 +133,8 @@ async function buyCryptoCurrency(binance) {
     currency = (await askQuestion("What cryptocurrency you are willing to buy?: ")).toUpperCase();
     combinedPair = currency + '/' + pairToTrade;
     let exitLoop = false;
+    
+    console.log('\x1b[36m%s\x1b[0m', 'Send a Request to Create Market Order ' + performance.now());
   
     exitLoop = await new Promise((resolve, err) => {
       binance.createMarketOrder(combinedPair, 'buy', undefined, undefined, { 'quoteOrderQty': quantity })
@@ -175,7 +178,7 @@ async function sellCryptoCurrency(binance, combinedPair, boughtBaseCurrencyAmoun
   console.log(`amount1: ${amount1},  amount2: ${amount2},  amount3: ${amount3}`)
   console.log(`milestonePrice1: ${milestonePrice1},  milestonePrice2: ${milestonePrice2},  milestonePrice3: ${milestonePrice3}`)
   
-  binance.createLimitOrder(combinedPair, "sell", amount1, milestonePrice1);
+  binance.createLimitOrder(combinedPair, "sell", amount1, milestonePrice1).then(_ => console.log('\x1b[36m%s\x1b[0m', 'Response Arrived, Limit order is completed ' + performance.now()));
   binance.createLimitOrder(combinedPair, "sell", amount3, milestonePrice2);
   binance.createLimitOrder(combinedPair, "sell", amount2, milestonePrice3);
   
