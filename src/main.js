@@ -23,8 +23,8 @@ const commonDataHandler = new Promise((resolve, err) => {
 
 const client = new Promise((resolve, err) => {
   resolve(new ccxt.binance({
-    apiKey: '1k8pHcreUowwve7fUOWlWt4dzwOXxL4hkYpYdIXW266TwND73dZmWD6PVyjDX3kZ',
-    secret: 'CfNBL3uuhZQPQYV2oxTt5cG74smyzgQ7kDsFxeJ9dzhmaJg2B9RM4oadbCPhVpNR'
+    apiKey: '',
+    secret: ''
   }))
   
   /*getApiKeys().then((apiKeys) => {
@@ -175,8 +175,8 @@ async function sellCryptoCurrency(binance, combinedPair, boughtBaseCurrencyAmoun
   const milestonePrice3 = (boughtPrice + (boughtPrice * milestone3 / 100)).toFixed(quoteCryptoPrecision)
   
   console.log(`milestone1: ${milestone1},  milestone2: ${milestone2},  milestone3: ${milestone3}`)
-  console.log(`amount1: ${amount1},  amount2: ${amount2},  amount3: ${amount3}`)
-  console.log(`milestonePrice1: ${milestonePrice1},  milestonePrice2: ${milestonePrice2},  milestonePrice3: ${milestonePrice3}`)
+  console.log(`boughtAmount: ${boughtBaseCurrencyAmount}, amount1: ${amount1},  amount2: ${amount2},  amount3: ${amount3}`)
+  console.log(`boughtPrice: ${boughtPrice}, milestonePrice1: ${milestonePrice1},  milestonePrice2: ${milestonePrice2},  milestonePrice3: ${milestonePrice3}`)
   
   binance.createLimitOrder(combinedPair, "sell", amount1, milestonePrice1).then(_ => console.log('\x1b[36m%s\x1b[0m', 'Response Arrived, Limit order is completed ' + performance.now()));
   binance.createLimitOrder(combinedPair, "sell", amount3, milestonePrice2);
