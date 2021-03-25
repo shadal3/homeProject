@@ -4,6 +4,7 @@ const { MTProto } = require('@mtproto/core');
 const { tempLocalStorage } = require('@mtproto/core/src/storage/temp');
 const { getSRPParams } = require('@mtproto/core');
 const Readline = require('readline');
+const { performance } = require('perf_hooks');
 
 const LocalStorage = require('node-localstorage').LocalStorage;
 const localStorage = new LocalStorage('./localStorage');
@@ -13,6 +14,8 @@ const MTProtoApiHash = '97e9bcb0c5e52b1fdc9d7b6bab3732da';
 
 export class telegramMain {
   constructor() {
+    
+    this.blockUpdate = false;
     
     this.mtproto = new MTProto({
       api_id: MTProtoApiId,
@@ -73,7 +76,23 @@ export class telegramMain {
         //await getUser();
       }
     } else {
-      console.log("PASSED");
+      console.log("you were signed in");
+    }
+    return this.listenMessages();
+  }
+  
+  async getUser() {
+    try {
+      const user = await this.api.call('users.getFullUser', {
+        id: {
+          _: 'inputUserSelf',
+        },
+      });
+      
+      return user;
+    } catch (error) {
+      console.log(error);
+      return null;
     }
   }
   
@@ -114,17 +133,42 @@ export class telegramMain {
   }
   
   listenMessages() {
+    //const requiredChannelIds = [1219958536, 1248722110, 1448562668 ] //1389805972
+    const requiredChannelIds = [1456370275]
+    let coin = null;
+    return new Promise((resolve, error) => {
       this.mtproto.updates.on('updates', message => {
-        if (message.updates[0]._ === "updateNewChannelMessage") {
-          if (message.updates[0].message.peer_id.channel_id === 1389805972) {
-            console.log(message.updates[0].message.message)
+        if (this.blockUpdate === false) {
+          if (message.updates[0]._ === "updateNewChannelMessage") {
+            if (requiredChannelIds.includes(message.updates[0].message.peer_id.channel_id)) {
+              const targetMessage = message.updates[0].message.message
+              const matchPattern1 = /(?<=#)[A-Z]{2,}(?=(\s|\n|\r))/
+              if (targetMessage.match(matchPattern1)) {
+                console.log('\x1b[36m%s\x1b[0m', 'Telegram handles has taken coin ' + performance.now());
+                coin = matchPattern1.exec(targetMessage)[0];
+                this.blockUpdate = true;
+                console.log("pattern1 " + coin);
+                resolve(coin);
+                return;
+              }
+              const matchPattern2 = /(?<=\s|^)[A-Z]{2,}(?=(\n|\r|\t|\s))/
+              if (targetMessage.match(matchPattern2)) {
+                console.log('\x1b[36m%s\x1b[0m', 'Telegram handles has taken coin ' + performance.now());
+                coin = matchPattern1.exec(targetMessage)[0];
+                this.blockUpdate = true;
+                console.log("pattern2 " + coin);
+                resolve(coin);
+                return;
+              }
+            }
           }
         }
       });
+    })
   }
   
-  async listenMessages2() {
-    this.listenMessages();
+  async getChannelDifference() {
+    //this.listenMessages();
     const chatExample = {
       id : 1389805972,
       access_hash: "10152628692453530569"
@@ -145,7 +189,7 @@ export class telegramMain {
     
   }
   
-  async getMessages2() {
+  async getHistory() {
     setInterval(async () => {
       const chatExample = {
         id : 1389805972,
@@ -192,23 +236,6 @@ export class telegramMain {
         }
       })
       console.log(channel);
-    } catch (error) {
-      console.log(error);
-      return null;
-    }
-  }
-  
-  async getUser() {
-    try {
-      const user = await this.api.call('users.getFullUser', {
-        id: {
-          _: 'inputUserSelf',
-        },
-      });
-      
-      console.log(user);
-      
-      return user;
     } catch (error) {
       console.log(error);
       return null;

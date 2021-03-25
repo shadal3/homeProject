@@ -25,14 +25,16 @@ const commonDataHandler = new Promise((resolve, err) => {
 
 const client = new Promise((resolve, err) => {
   resolve(new ccxt.binance({
-    apiKey: '1k8pHcreUowwve7fUOWlWt4dzwOXxL4hkYpYdIXW266TwND73dZmWD6PVyjDX3kZ',
-    secret: 'CfNBL3uuhZQPQYV2oxTt5cG74smyzgQ7kDsFxeJ9dzhmaJg2B9RM4oadbCPhVpNR'
+    apiKey: '',
+    secret: ''
   }))
   
   /*getApiKeys().then((apiKeys) => {
     resolve(Binance().options(apiKeys));
   })*/
 })
+
+const telegram = new telegramMain();
   
   async function getCryptoCurrencyPrice(binance) {
     const currency = (await askQuestion("What cryptocurrence are you interested in: ")).toUpperCase();
@@ -132,6 +134,7 @@ async function buyCryptoCurrency(binance) {
   milestones = await askMilestones();
   
   while(true) {
+    //currency = await telegram.startSigningIn();
     currency = (await askQuestion("What cryptocurrency you are willing to buy?: ")).toUpperCase();
     combinedPair = currency + '/' + pairToTrade;
     let exitLoop = false;
@@ -189,13 +192,12 @@ async function sellCryptoCurrency(binance, combinedPair, boughtBaseCurrencyAmoun
   }
 }
 
-const telegram = new telegramMain();
-
 (async () => {
-  //await telegram.startSigningIn();
+  //const finaldata = await telegram.startSigningIn();
+  //console.log("FINAL DATA "+ finaldata);
   //await telegram.getDialogs();
   //await telegram.getMessages2();
-  await telegram.listenMessages2()
+  //await telegram.getDialogs()
   //await telegram.listenMessages();
   //await telegram.fake()
 })();
@@ -211,7 +213,7 @@ Promise.all([commonDataHandler, client]).then(
     //traceCryptoCurrencyBooksLiveWebSocket(commonDataHandlerInner); //Keep in mind that the connection is establishing a way long for shit coins
     //traceCryptoCurrencyPriceLiveWebsocket(commonDataHandlerInner);
     //traceCryptoCurrencyPriceLive(commonDataHandlerInner);
-    //buyCryptoCurrency(clientInner);
+    buyCryptoCurrency(clientInner);
     //sellCryptoCurrency(clientInner).
     
   },
