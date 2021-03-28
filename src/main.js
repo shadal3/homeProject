@@ -1,11 +1,9 @@
 // main.js
-require("regenerator-runtime"); // to fix await in case babel polyfills the code (polyfilling the code removes async/await native)
+require("regenerator-runtime"); // to fix await in case babel polyfills the code (seems polyfilling removes async/await native)
 
 import { telegramMain } from './js/telegramMain';
 
 //Required External Modules
-
-const Express = require('express');
 const { sleep } = require('@mtproto/core/src/utils/common');
 
 const Readline = require('readline');
@@ -25,8 +23,8 @@ const commonDataHandler = new Promise((resolve, err) => {
 
 const client = new Promise((resolve, err) => {
   resolve(new ccxt.binance({
-    apiKey: '',
-    secret: ''
+    apiKey: 'rHuuhFU2whQ6SDXbWDH6w9qiKh0EfgMZ8aWWaO2pf9RSDD7kmhz0moiHvST7zPL8',
+    secret: '8Gl1lV6GZ2LoUdkc1otKP0z524OVVIkR2b0Um9e5ZhvKbJJ8mXRFHriTavd5sODo'
   }))
   
   /*getApiKeys().then((apiKeys) => {
@@ -133,11 +131,21 @@ async function buyCryptoCurrency(binance) {
   
   milestones = await askMilestones();
   
-  while(true) {
-    //currency = await telegram.startSigningIn();
+  const choice = await askQuestion("Do you want to use telegram to capture the coin (y/n)? ");
+  if (choice.toLowerCase() === 'y' || choice.toLowerCase() === 'yes') {
+    currency = await telegram.startSigningIn();
+  } else {
     currency = (await askQuestion("What cryptocurrency you are willing to buy?: ")).toUpperCase();
+  }
+  
+  let isFirstLoop = true;
+  let exitLoop = false;
+  
+  while(true) {
+    if (isFirstLoop === false) {
+      currency = (await askQuestion("What cryptocurrency you are willing to buy?: ")).toUpperCase();
+    }
     combinedPair = currency + '/' + pairToTrade;
-    let exitLoop = false;
     
     console.log('\x1b[36m%s\x1b[0m', 'Send a Request to Create Market Order ' + performance.now());
   
@@ -148,7 +156,23 @@ async function buyCryptoCurrency(binance) {
           boughtPrice = result.price
           resolve(true)
         })
-        .catch(() => resolve(false))
+        .catch((error) => {
+          const errorName = error.name;
+          
+          if (errorName === 'errorInsufficientFunds' || errorName === 'InsufficientFunds') {
+            console.log('\x1b[41m%s\x1b[0m', 'Insufficient Funds, Wrapping up the Execution of Script');
+            sleep(3)
+            process.exit();
+          } else if (errorName === 'BadSymbol' || errorName === 'errorBadSymbol') {
+            console.log('\x1b[33m%s\x1b[0m', 'Incorrect Symbol, Please Try Again');
+          } else {
+            console.log('\x1b[31m%s\x1b[0m', 'Unknown Error Type ' + error.name);
+            process.exit()
+          }
+  
+          isFirstLoop = false;
+          resolve(false)
+        })
     })
     if (exitLoop) break;
   }
@@ -183,9 +207,11 @@ async function sellCryptoCurrency(binance, combinedPair, boughtBaseCurrencyAmoun
   console.log(`amount1: ${amount1},  amount2: ${amount2},  amount3: ${amount3}`)
   console.log(`milestonePrice1: ${milestonePrice1},  milestonePrice2: ${milestonePrice2},  milestonePrice3: ${milestonePrice3}`)
   
-  binance.createLimitOrder(combinedPair, "sell", amount1, milestonePrice1).then(_ => console.log('\x1b[36m%s\x1b[0m', 'Response Arrived, Limit order is completed ' + performance.now()));
-  binance.createLimitOrder(combinedPair, "sell", amount3, milestonePrice2);
-  binance.createLimitOrder(combinedPair, "sell", amount2, milestonePrice3);
+  binance.createLimitOrder(combinedPair, "sell", amount1, milestonePrice1).then(_ => console.log('\x1b[36m%s\x1b[0m', 'Response 1 Arrived, Limit order is completed ' + performance.now()));
+  binance.createLimitOrder(combinedPair, "sell", amount3, milestonePrice2).then(_ => console.log('\x1b[36m%s\x1b[0m', 'Response 2 Arrived, Limit order is completed ' + performance.now()))
+  binance.createLimitOrder(combinedPair, "sell", amount2, milestonePrice3).then(_ => console.log('\x1b[36m%s\x1b[0m', 'Response 3 Arrived, Limit order is completed ' + performance.now()))
+  
+  //The 400% is the max value you can set limit;
   
   function round(value, decimals) {
     return Number(Math.floor(value+'e'+decimals)+'e-'+decimals);
@@ -199,7 +225,6 @@ async function sellCryptoCurrency(binance, combinedPair, boughtBaseCurrencyAmoun
   //await telegram.getMessages2();
   //await telegram.getDialogs()
   //await telegram.listenMessages();
-  //await telegram.fake()
 })();
 
 
@@ -214,6 +239,7 @@ Promise.all([commonDataHandler, client]).then(
     //traceCryptoCurrencyPriceLiveWebsocket(commonDataHandlerInner);
     //traceCryptoCurrencyPriceLive(commonDataHandlerInner);
     buyCryptoCurrency(clientInner);
+    //telegram.startSigningIn();
     //sellCryptoCurrency(clientInner).
     
   },

@@ -48,8 +48,8 @@ export class telegramMain {
           phone,
           phone_code_hash,
         });
-        
-        console.log(`authResult:`, authResult);
+  
+        console.log('\x1b[36m%s\x1b[0m', 'You Are Now Signed in, Telegram api connection is established :)');
       } catch (error) {
         if (error.error_message !== 'SESSION_PASSWORD_NEEDED') {
           return;
@@ -72,11 +72,9 @@ export class telegramMain {
         const authResult = await checkPassword({ srp_id, A, M1 });
         
         console.log(`authResult:`, authResult);
-        
-        //await getUser();
       }
     } else {
-      console.log("you were signed in");
+      console.log('\x1b[36m%s\x1b[0m', 'You Were Signed in, Telegram api connection is established :)');
     }
     return this.listenMessages();
   }
@@ -128,23 +126,24 @@ export class telegramMain {
     });
   }
   
-  async fake() {
-    await this.getUser();
-  }
-  
   listenMessages() {
-    //const requiredChannelIds = [1219958536, 1248722110, 1448562668 ] //1389805972
-    const requiredChannelIds = [1456370275]
+    const requiredChannelIds = [1219958536, 1248722110, 1448562668] //1389805972
+    //const requiredChannelIds = [1456370275]
     let coin = null;
     return new Promise((resolve, error) => {
       this.mtproto.updates.on('updates', message => {
         if (this.blockUpdate === false) {
           if (message.updates[0]._ === "updateNewChannelMessage") {
             if (requiredChannelIds.includes(message.updates[0].message.peer_id.channel_id)) {
+              //console.log('\x1b[36m%s\x1b[0m', 'The coin has been captured from telegram ' + performance.now());
               const targetMessage = message.updates[0].message.message
+              console.log(targetMessage)
+              //this.blockUpdate = true;
+              //resolve("SKY");
+              //return;
               const matchPattern1 = /(?<=#)[A-Z]{2,}(?=(\s|\n|\r))/
               if (targetMessage.match(matchPattern1)) {
-                console.log('\x1b[36m%s\x1b[0m', 'Telegram handles has taken coin ' + performance.now());
+                console.log('\x1b[36m%s\x1b[0m', 'The coin has been captured from telegram ' + performance.now());
                 coin = matchPattern1.exec(targetMessage)[0];
                 this.blockUpdate = true;
                 console.log("pattern1 " + coin);
@@ -153,8 +152,8 @@ export class telegramMain {
               }
               const matchPattern2 = /(?<=\s|^)[A-Z]{2,}(?=(\n|\r|\t|\s))/
               if (targetMessage.match(matchPattern2)) {
-                console.log('\x1b[36m%s\x1b[0m', 'Telegram handles has taken coin ' + performance.now());
-                coin = matchPattern1.exec(targetMessage)[0];
+                console.log('\x1b[36m%s\x1b[0m', 'The coin has been captured from telegram ' + performance.now());
+                coin = matchPattern2.exec(targetMessage)[0];
                 this.blockUpdate = true;
                 console.log("pattern2 " + coin);
                 resolve(coin);
@@ -168,7 +167,6 @@ export class telegramMain {
   }
   
   async getChannelDifference() {
-    //this.listenMessages();
     const chatExample = {
       id : 1389805972,
       access_hash: "10152628692453530569"
