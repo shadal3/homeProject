@@ -1,2 +1,0 @@
-webpack.build.conf and webpack.dev.conf merge with webpack.base.conf
-package.json uses webpack.build.conf and webpack.dev.conf as scripts

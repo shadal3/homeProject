@@ -23,8 +23,8 @@ const commonDataHandler = new Promise((resolve, err) => {
 
 const client = new Promise((resolve, err) => {
   resolve(new ccxt.binance({
-    apiKey: 'rHuuhFU2whQ6SDXbWDH6w9qiKh0EfgMZ8aWWaO2pf9RSDD7kmhz0moiHvST7zPL8',
-    secret: '8Gl1lV6GZ2LoUdkc1otKP0z524OVVIkR2b0Um9e5ZhvKbJJ8mXRFHriTavd5sODo'
+    apiKey: '',
+    secret: ''
   }))
   
   /*getApiKeys().then((apiKeys) => {
@@ -108,9 +108,9 @@ async function buyCryptoCurrency(binance) {
   let quantity = null;
   let currency = null;
   let combinedPair = null;
-  let boughtBaseCurrencyAmount = 0
+  let boughtBaseCurrencyAmount = 0;
   let boughtPrice = 0;
-  let milestones = [];
+  let milestones = null;
   
   while (true) {
     quantity = await askQuestion("How much quote crypto currency you want to spend to buy base crypto?: ") //BTC/USDT === base currency/quote currency
@@ -161,7 +161,7 @@ async function buyCryptoCurrency(binance) {
           
           if (errorName === 'errorInsufficientFunds' || errorName === 'InsufficientFunds') {
             console.log('\x1b[41m%s\x1b[0m', 'Insufficient Funds, Wrapping up the Execution of Script');
-            sleep(3)
+            sleep(3);
             process.exit();
           } else if (errorName === 'BadSymbol' || errorName === 'errorBadSymbol') {
             console.log('\x1b[33m%s\x1b[0m', 'Incorrect Symbol, Please Try Again');
@@ -211,21 +211,12 @@ async function sellCryptoCurrency(binance, combinedPair, boughtBaseCurrencyAmoun
   binance.createLimitOrder(combinedPair, "sell", amount3, milestonePrice2).then(_ => console.log('\x1b[36m%s\x1b[0m', 'Response 2 Arrived, Limit order is completed ' + performance.now()))
   binance.createLimitOrder(combinedPair, "sell", amount2, milestonePrice3).then(_ => console.log('\x1b[36m%s\x1b[0m', 'Response 3 Arrived, Limit order is completed ' + performance.now()))
   
-  //The 400% is the max value you can set limit;
+  //The 400% is the max value you can set as limit;
   
   function round(value, decimals) {
     return Number(Math.floor(value+'e'+decimals)+'e-'+decimals);
   }
 }
-
-(async () => {
-  //const finaldata = await telegram.startSigningIn();
-  //console.log("FINAL DATA "+ finaldata);
-  //await telegram.getDialogs();
-  //await telegram.getMessages2();
-  //await telegram.getDialogs()
-  //await telegram.listenMessages();
-})();
 
 
 Promise.all([commonDataHandler, client]).then(
@@ -234,6 +225,7 @@ Promise.all([commonDataHandler, client]).then(
     
     const commonDataHandlerInner = data[0];
     const clientInner = data[1];
+
     //getCryptoCurrencyPrice(commonDataHandlerInner);
     //traceCryptoCurrencyBooksLiveWebSocket(commonDataHandlerInner); //Keep in mind that the connection is establishing a way long for shit coins
     //traceCryptoCurrencyPriceLiveWebsocket(commonDataHandlerInner);
@@ -246,7 +238,7 @@ Promise.all([commonDataHandler, client]).then(
   (error) => {
     console.log(error)
   }
-)
+);
 
 
 async function getApiKeys() {
@@ -263,7 +255,7 @@ function askQuestion(question) {
     const rl = Readline.createInterface({
         input: process.stdin,
         output: process.stdout
-    })
+    });
 
     return new Promise((resolve, err) => {
         rl.question(question, (name) => {

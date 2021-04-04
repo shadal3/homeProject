@@ -2,11 +2,6 @@
   "name": "webpacktutorial",
   "version": "1.0.0",
   "description": "",
-  "scripts": {
-    "build": "webpack --config ./build/webpack.build.conf.js",
-    "dev": "webpack-dev-server --open --config ./build/webpack.dev.conf.js",
-    "server": "webpack --config ./build/webpack.node.conf.js"
-  },
   "keywords": [],
   "author": "Igor Kozlovski",
   "license": "ISC",
@@ -24,25 +19,11 @@
     "babel-polyfill": "^6.26.0",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
-    "css-loader": "^3.0.0",
-    "css-mqpacker": "^7.0.0",
-    "cssnano": "^4.1.10",
     "file-loader": "^4.3.0",
     "gulp": "^4.0.2",
-    "html-loader": "^0.5.5",
-    "html-webpack-plugin": "^3.2.0",
-    "mini-css-extract-plugin": "^0.7.0",
-    "node-sass": "^4.12.0",
     "path": "^0.12.7",
-    "pixi.js": "^5.0.4",
-    "postcss-loader": "^3.0.0",
-    "rxjs": "^6.5.2",
-    "sass-loader": "^7.3.1",
-    "style-loader": "^0.23.1",
     "webpack": "^4.41.6",
-    "webpack-cli": "^3.3.5",
-    "webpack-dev-server": "^3.10.3",
-    "webpack-merge": "^4.2.2"
+    "webpack-cli": "^3.3.5"
   },
   "dependencies": {
     "@mtproto/core": "5.3.0",
@@ -56,10 +37,5 @@
     "readline": "^1.3.0",
     "regenerator-runtime": "^0.13.7",
     "source-map-support": "^0.5.19"
-  },
-  "comments": {
-    "installWebPack": "npm install webpack webpack-cli --save-dev",
-    "--open": "open at once after npm install dev is exectured ",
-    "browserList": "for example 3 latest versions of chrome, 1>% - uses this browser more that 1% of users"
   }
 }

@@ -1,7 +1,6 @@
 require("regenerator-runtime"); // to fix await in case babel polyfills the code (polyfilling the code removes async/await native)
 
 const { MTProto } = require('@mtproto/core');
-const { tempLocalStorage } = require('@mtproto/core/src/storage/temp');
 const { getSRPParams } = require('@mtproto/core');
 const Readline = require('readline');
 const { performance } = require('perf_hooks');
@@ -9,8 +8,8 @@ const { performance } = require('perf_hooks');
 const LocalStorage = require('node-localstorage').LocalStorage;
 const localStorage = new LocalStorage('./localStorage');
 
-const MTProtoApiId = 3470289;
-const MTProtoApiHash = '97e9bcb0c5e52b1fdc9d7b6bab3732da';
+const MTProtoApiId = ''; //int
+const MTProtoApiHash = ''; //string
 
 export class telegramMain {
   constructor() {
@@ -21,7 +20,7 @@ export class telegramMain {
       api_id: MTProtoApiId,
       api_hash: MTProtoApiHash,
       customLocalStorage: localStorage,
-    })
+    });
   
     this.mtproto.updateInitConnectionParams({
       app_version: '10.0.0',
@@ -244,7 +243,7 @@ export class telegramMain {
     const rl = Readline.createInterface({
       input: process.stdin,
       output: process.stdout
-    })
+    });
     
     return new Promise((resolve, err) => {
       rl.question(question, (name) => {
