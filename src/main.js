@@ -23,8 +23,8 @@ const commonDataHandler = new Promise((resolve, err) => {
 
 const client = new Promise((resolve, err) => {
   resolve(new ccxt.binance({
-    apiKey: 'rHuuhFU2whQ6SDXbWDH6w9qiKh0EfgMZ8aWWaO2pf9RSDD7kmhz0moiHvST7zPL8',
-    secret: '8Gl1lV6GZ2LoUdkc1otKP0z524OVVIkR2b0Um9e5ZhvKbJJ8mXRFHriTavd5sODo'
+    apiKey: 'MBYzGaOEPcRv9BIo6jO5kJvgPpdK0EtAaUBTlnIj6Aq79tomcD1muCVHWUhlBknz',
+    secret: 'MaTUC6fnqvUh2iYxo7p5JTbvgWjEdryN63oQ1JeVDzcy0tbb9PVGtpndRQfC5GFf'
   }))
   
   /*getApiKeys().then((apiKeys) => {
@@ -207,9 +207,9 @@ async function sellCryptoCurrency(binance, combinedPair, boughtBaseCurrencyAmoun
   console.log(`amount1: ${amount1},  amount2: ${amount2},  amount3: ${amount3}`)
   console.log(`milestonePrice1: ${milestonePrice1},  milestonePrice2: ${milestonePrice2},  milestonePrice3: ${milestonePrice3}`)
   
-  binance.createLimitOrder(combinedPair, "sell", amount1, milestonePrice1).then(_ => console.log('\x1b[36m%s\x1b[0m', 'Response 1 Arrived, Limit order is completed ' + performance.now()));
-  binance.createLimitOrder(combinedPair, "sell", amount3, milestonePrice2).then(_ => console.log('\x1b[36m%s\x1b[0m', 'Response 2 Arrived, Limit order is completed ' + performance.now()))
-  binance.createLimitOrder(combinedPair, "sell", amount2, milestonePrice3).then(_ => console.log('\x1b[36m%s\x1b[0m', 'Response 3 Arrived, Limit order is completed ' + performance.now()))
+  binance.createLimitOrder(combinedPair, "sell", amount1, milestonePrice1).then(_ => console.log('\x1b[32m%s\x1b[0m', 'Response 1 Arrived, Limit order is completed ' + performance.now()));
+  binance.createLimitOrder(combinedPair, "sell", amount3, milestonePrice2).then(_ => console.log('\x1b[32m%s\x1b[0m', 'Response 2 Arrived, Limit order is completed ' + performance.now()))
+  binance.createLimitOrder(combinedPair, "sell", amount2, milestonePrice3).then(_ => console.log('\x1b[32m%s\x1b[0m', 'Response 3 Arrived, Limit order is completed ' + performance.now()))
   
   //The 400% is the max value you can set limit;
   
@@ -230,7 +230,7 @@ async function sellCryptoCurrency(binance, combinedPair, boughtBaseCurrencyAmoun
 
 Promise.all([commonDataHandler, client]).then(
   (data) => {
-    console.log('\x1b[36m%s\x1b[0m', 'Connection via api established :)');  //cyan
+    console.log('\x1b[32m%s\x1b[0m', 'Connection via api established :)');  //cyan
     
     const commonDataHandlerInner = data[0];
     const clientInner = data[1];

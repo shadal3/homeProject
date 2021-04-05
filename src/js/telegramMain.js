@@ -7,10 +7,10 @@ const Readline = require('readline');
 const { performance } = require('perf_hooks');
 
 const LocalStorage = require('node-localstorage').LocalStorage;
-const localStorage = new LocalStorage('./localStorage');
+const localStorage = new LocalStorage('./localStorage2');
 
-const MTProtoApiId = 3470289;
-const MTProtoApiHash = '97e9bcb0c5e52b1fdc9d7b6bab3732da';
+const MTProtoApiId = 3242121; // 3470289
+const MTProtoApiHash = '9e1756206777b1f588aa569ee8cbbbd9'; //97e9bcb0c5e52b1fdc9d7b6bab3732da
 
 export class telegramMain {
   constructor() {
@@ -31,7 +31,7 @@ export class telegramMain {
   }
  
   async startSigningIn() {
-    const phone = '+37256233249';
+    const phone = '+79689632277';
     let code = 'XXXXX';
     const password = 'XXXXXX';
     
@@ -49,7 +49,7 @@ export class telegramMain {
           phone_code_hash,
         });
   
-        console.log('\x1b[36m%s\x1b[0m', 'You Are Now Signed in, Telegram api connection is established :)');
+        console.log('\x1b[32m%s\x1b[0m', 'You Are Now Signed in, Telegram connection via api established :)');
       } catch (error) {
         if (error.error_message !== 'SESSION_PASSWORD_NEEDED') {
           return;
@@ -74,7 +74,7 @@ export class telegramMain {
         console.log(`authResult:`, authResult);
       }
     } else {
-      console.log('\x1b[36m%s\x1b[0m', 'You Were Signed in, Telegram api connection is established :)');
+      console.log('\x1b[32m%s\x1b[0m', 'You Were Signed in, Telegram connection via api established :)');
     }
     return this.listenMessages();
   }
@@ -127,11 +127,14 @@ export class telegramMain {
   }
   
   listenMessages() {
-    const requiredChannelIds = [1219958536, 1248722110, 1448562668] //1389805972
+    console.log('\x1b[36m%s\x1b[0m', 'We are Waiting for Coin ...');
+    
+    const requiredChannelIds = [1219958536] //1389805972    wallStreet, usual B ,blue B
     //const requiredChannelIds = [1456370275]
     let coin = null;
     return new Promise((resolve, error) => {
       this.mtproto.updates.on('updates', message => {
+        //console.log(message);
         if (this.blockUpdate === false) {
           if (message.updates[0]._ === "updateNewChannelMessage") {
             if (requiredChannelIds.includes(message.updates[0].message.peer_id.channel_id)) {
@@ -146,16 +149,16 @@ export class telegramMain {
                 console.log('\x1b[36m%s\x1b[0m', 'The coin has been captured from telegram ' + performance.now());
                 coin = matchPattern1.exec(targetMessage)[0];
                 this.blockUpdate = true;
-                console.log("pattern1 " + coin);
+                console.log("The First Pattern is " + coin);
                 resolve(coin);
                 return;
               }
-              const matchPattern2 = /(?<=\s|^)[A-Z]{2,}(?=(\n|\r|\t|\s))/
+              const matchPattern2 = /(?<=\s|^)[A-Z]{2,}(?=(\n|\r|\t|\s|$))/
               if (targetMessage.match(matchPattern2)) {
                 console.log('\x1b[36m%s\x1b[0m', 'The coin has been captured from telegram ' + performance.now());
                 coin = matchPattern2.exec(targetMessage)[0];
                 this.blockUpdate = true;
-                console.log("pattern2 " + coin);
+                console.log("The Second Pattern is " + coin);
                 resolve(coin);
                 return;
               }
@@ -252,6 +255,14 @@ export class telegramMain {
         resolve(name);
       })
     });
+  }
+  
+  getLocalTime() {
+    const today = new Date();
+    const date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+    const time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds() + ":" + today.getMilliseconds();
+    const dateTime = date + ' ' + time;
+    return dateTime
   }
   
   createApiConst(mtproto) {
