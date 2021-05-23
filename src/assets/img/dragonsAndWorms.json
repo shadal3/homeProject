@@ -1,0 +1,30 @@
+{"frames": {
+
+"spyro.png":
+{
+	"frame": {"x":0,"y":0,"w":764,"h":1046},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":764,"h":1046},
+	"sourceSize": {"w":764,"h":1046},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"worm.png":
+{
+	"frame": {"x":0,"y":1046,"w":512,"h":384},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":512,"h":384},
+	"sourceSize": {"w":512,"h":384},
+	"pivot": {"x":0.5,"y":0.5}
+}},
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "dragonsAndWorms.png",
+	"format": "RGBA8888",
+	"size": {"w":764,"h":1430},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:55ce0068d7219709c45ec293cc028793:bfc58864d3e914af9dd0c3779be136c1:e8a67a630a3f012c9d05524efcb4a645$"
+}
+}

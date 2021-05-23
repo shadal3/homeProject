@@ -7,6 +7,8 @@
 @import "utils/mixins";
 @import "utils/fonts";
 
+style {padding: 0; margin: 0}
+
 header, html, body, #intro {
   height: 100%;
 }
